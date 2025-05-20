@@ -2,13 +2,25 @@ import { useState } from "react";
 import "./App.css";
 
 function App() {
-  const [refran, setRefran] = useState("");
-  const [refranes, setRefranes] = useState([]);
+  const [refran, setRefran] = useState<string>("");
+  const [refranes, setRefranes] = useState<string[]>([]);
 
   const addRefran = () => {
+    if (refran.trim() === "") {
+      alert("No se puede guardar un refrán vacío");
+      return;
+    }
     setRefranes((prevRefranes) => [...prevRefranes, refran]);
     setRefran("");
   };
+
+  const clearRefran = () => {
+    if (refranes.length === 0) {
+      alert("No hay refranes para borrar");
+      return;
+    }
+    setRefranes([]);
+  }
 
   return (
     <>
@@ -25,12 +37,20 @@ function App() {
               value={refran}
               onChange={(e) => setRefran(e.target.value)}
             />
-            <button
-              className="bg-blue-500 rounded-md hover:cursor-pointer text-white p-2"
-              onClick={addRefran}
-            >
-              Ingresar Refran
-            </button>
+            <div className="flex flex-row justify-center gap-2">
+              <button
+                className="bg-blue-500 rounded-md hover:cursor-pointer text-white p-2"
+                onClick={addRefran}
+              >
+                guardar refran
+              </button>
+              <button
+                className="bg-blue-500 rounded-md hover:cursor-pointer text-white p-2"
+                onClick={clearRefran}
+              >
+                Borrar refranes
+              </button>
+            </div>
           </div>
           <div>
             refranes:
@@ -38,11 +58,7 @@ function App() {
               return (
                 <div
                   key={refran}
-                  className="bg-white 
-                            border 
-                            border-gray-300 
-                            p-4 rounded-md 
-                            shadow-md mb-2"
+                  className="bg-white border border-gray-300 p-4 rounded-md shadow-md mb-2"
                 >
                   {refran}
                 </div>
