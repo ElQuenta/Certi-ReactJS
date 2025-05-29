@@ -12,6 +12,7 @@ import Container from "@mui/material/Container";
 import PasswordIcon from "@mui/icons-material/Password";
 import * as yup from "yup";
 import { useFormik } from "formik";
+import { useNavigate } from "react-router-dom";
 
 const loginSchema = yup.object({
   email: yup.string().email("No es un email valido").required("El email es requerido"),
@@ -22,8 +23,12 @@ const loginSchema = yup.object({
 });
 
 function LoginPage() {
+  const navigate = useNavigate();
 
-  
+  const navigateDashboard = () => {
+    navigate('/app/dashboard')
+  }
+
   const formik = useFormik({
     initialValues: {
       email: '',
@@ -32,6 +37,7 @@ function LoginPage() {
     validationSchema: loginSchema,
     onSubmit: (values) => {
       console.log("Form submitted with values:", values);
+      navigateDashboard();
     },
   });
 
