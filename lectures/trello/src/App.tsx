@@ -3,14 +3,17 @@ import "./App.css";
 import DashboardPage from "./pages/Dashboard";
 import LoginPage from "./pages/Login";
 import RegisterPage from "./pages/Register";
+import Layout from "./layout/layout";
 
 function App() {
   return (
-    <BrowserRouter basename="/app">
+    <BrowserRouter>
       <Routes>
-        <Route path="/home" element={<DashboardPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
+        <Route path="/app" element={<Layout/>}>
+          <Route path="home" element={<DashboardPage />} />
+        </Route>
       </Routes>
     </BrowserRouter>
   );
