@@ -11,7 +11,6 @@ import { CustomDialogs } from "../components/Dialog";
 import { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { getStorage } from "../helpers/localStorage";
 import {
   createProject,
   deleteProject,
@@ -22,6 +21,7 @@ import { v4 as uuidv4 } from "uuid";
 import AddIcon from "@mui/icons-material/Add";
 import type { Project } from "../interfaces/projectInterface";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../contexts/AuthContext";
 
 const projectSchema = Yup.object({
   projectName: Yup.string().required("El nombre del proyecto es requerido"),
@@ -29,13 +29,13 @@ const projectSchema = Yup.object({
 function DashboardPage() {
   const navigate = useNavigate();
 
-  const [user, setUser] = useState(null);
   const [projects, setProjects] = useState<Project[]>([]);
   const [openDialog, setOpenDialog] = useState(false);
-  const [project, setProject] = useState(null);
+  const [project, setProject] = useState<Project|null>(null);
+  const { user } = useAuth();
 
-  const handleSubmit = async (values) => {
-    let response;
+  const handleSubmit = async (values: {projectName: string}) => {
+    let response: Project;
     if (project?.name) {
       response = await updateProject({
         ...project,
@@ -103,11 +103,7 @@ function DashboardPage() {
   };
 
   useEffect(() => {
-    const userStorage = getStorage("user");
-    setUser(userStorage);
-    if (userStorage) {
-      getProjects(userStorage.id);
-    }
+    getProjects(user.id);
   }, []);
 
   const goToProject = (projectId: string) => {
