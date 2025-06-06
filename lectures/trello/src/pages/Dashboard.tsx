@@ -60,7 +60,6 @@ function DashboardPage() {
     }
 
     formik.resetForm();
-    setProject(null);
     setOpenDialog(false);
   };
   const formik = useFormik({
@@ -76,6 +75,7 @@ function DashboardPage() {
 
   const closeDialogHandler = async () => {
     await formik.resetForm();
+    setProject(null);
     setOpenDialog(false);
   };
 
@@ -114,7 +114,7 @@ function DashboardPage() {
     <Container maxWidth="lg">
       <CustomDialogs
         title={
-          formik.values.projectName !== ""
+          project !== null
             ? "Editar Proyecto"
             : "Agregar Proyecto"
         }
