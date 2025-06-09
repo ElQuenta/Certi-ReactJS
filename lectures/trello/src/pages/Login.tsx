@@ -33,7 +33,6 @@ const loginSchema = yup.object({
 function LoginPage() {
   const navigate = useNavigate();
   const [loginError, setLoginError] = useState(false);
-  const { login: loginContext } = useAuth();
   const login  = useAuthStore((state)=> state.login);
 
   const formik = useFormik({
@@ -44,7 +43,6 @@ function LoginPage() {
     validationSchema: loginSchema,
     onSubmit: async (values) => {
       const responseLogin = await loginService(values.email, values.password);
-      debugger;
       if (!responseLogin) {
         setLoginError(true);
         formik.resetForm();
@@ -52,7 +50,6 @@ function LoginPage() {
       }
       // loginContext(responseLogin);
       login(responseLogin);
-      debugger;
       navigate("/app/dashboard", {
         replace: true,
       });
